@@ -134,6 +134,13 @@ bool ListEntitiesIterator::on_alarm_control_panel(alarm_control_panel::AlarmCont
 }
 #endif
 
+#ifdef USE_KEYBOARD
+bool ListEntitiesIterator::on_keyboard(keyboard::Keyboard *keyboard) {
+  this->web_server_->events_.send(this->web_server_->keyboard_json(keyboard, DETAIL_ALL).c_str(), "state");
+  return true;
+}
+#endif
+
 #ifdef USE_WATER_HEATER
 bool ListEntitiesIterator::on_water_heater(water_heater::WaterHeater *obj) {
   this->events_->deferrable_send_state(obj, "state_detail_all", WebServer::water_heater_all_json_generator);

@@ -100,6 +100,9 @@
 #ifdef USE_UPDATE
 #include "esphome/components/update/update_entity.h"
 #endif
+#ifdef USE_KEYBOARD
+#include "esphome/components/keyboard/keyboard.h"
+#endif
 
 namespace esphome {
 
@@ -239,6 +242,10 @@ class Application {
 #endif
 
   /// Reserve space for components to avoid memory fragmentation
+
+#ifdef USE_KEYBOARD
+  void register_keyboard(keyboard::Keyboard *keyboard) { this->keyboards_.push_back(keyboard); }
+#endif
 
   /// Register the component in this Application instance.
   template<class C> C *register_component(C *c) {
@@ -478,7 +485,15 @@ class Application {
   auto &get_updates() const { return this->updates_; }
   GET_ENTITY_METHOD(update::UpdateEntity, update, updates)
 #endif
-
+#ifdef USE_KEYBOARD
+  const std::vector<keyboard::Keyboard *> &get_keyboards() { return this->keyboards_; }
+  keyboard::Keyboard *get_keyboard_by_key(uint32_t key, bool include_internal = false) {
+    for (auto *obj : this->keyboards_)
+      if (obj->get_object_id_hash() == key && (include_internal || !obj->is_internal()))
+        return obj;
+    return nullptr;
+  }
+#endif
   Scheduler scheduler;
 
   /// Register/unregister a socket file descriptor to be monitored for read events.
@@ -673,6 +688,9 @@ class Application {
 #endif
 #ifdef USE_UPDATE
   StaticVector<update::UpdateEntity *, ESPHOME_ENTITY_UPDATE_COUNT> updates_{};
+#endif
+#ifdef USE_KEYBOARD
+  std::vector<keyboard::Keyboard *> keyboards_{};
 #endif
 };
 

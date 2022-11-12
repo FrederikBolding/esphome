@@ -92,6 +92,9 @@ class ListEntitiesIterator : public ComponentIterator {
   bool on_update(update::UpdateEntity *obj) override;
 #endif
   bool completed() { return this->state_ == IteratorState::NONE; }
+#ifdef USE_KEYBOARD
+  bool on_keyboard(keyboard::Keyboard *keyboard) override;
+#endif
 
  protected:
   const WebServer *web_server_;

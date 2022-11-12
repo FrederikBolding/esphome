@@ -67,6 +67,9 @@
 #ifdef USE_UPDATE
 #include "esphome/components/update/update_entity.h"
 #endif
+#ifdef USE_KEYBOARD
+#include "esphome/components/keyboard/keyboard.h"
+#endif
 
 namespace esphome {
 
@@ -134,6 +137,9 @@ class Controller {
 #endif
 #ifdef USE_UPDATE
   virtual void on_update(update::UpdateEntity *obj){};
+#endif
+#ifdef USE_KEYBOARD
+  virtual void on_keyboard_update(keyboard::Keyboard *obj){};
 #endif
 };
 

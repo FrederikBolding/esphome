@@ -102,6 +102,9 @@ class ComponentIterator {
 #ifdef USE_UPDATE
   virtual bool on_update(update::UpdateEntity *update) = 0;
 #endif
+#ifdef USE_KEYBOARD
+  virtual bool on_keyboard(keyboard::Keyboard *keyboard);
+#endif
   virtual bool on_end();
 
  protected:
@@ -184,6 +187,9 @@ class ComponentIterator {
 #endif
 #ifdef USE_UPDATE
     UPDATE,
+#endif
+#ifdef USE_KEYBOARD
+    KEYBOARD,
 #endif
     MAX,
   };

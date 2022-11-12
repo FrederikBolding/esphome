@@ -181,6 +181,22 @@ void ComponentIterator::advance() {
       break;
 #endif
 
+#ifdef USE_KEYBOARD
+    case IteratorState::KEYBOARD:
+      if (this->at_ >= App.get_keyboards().size()) {
+        advance_platform = true;
+      } else {
+        auto *keyboard = App.get_keyboards()[this->at_];
+        if (keyboard->is_internal() && !this->include_internal_) {
+          success = true;
+          break;
+        } else {
+          success = this->on_keyboard(keyboard);
+        }
+      }
+      break;
+#endif
+
 #ifdef USE_UPDATE
     case IteratorState::UPDATE:
       this->process_platform_item_(App.get_updates(), &ComponentIterator::on_update);
@@ -205,5 +221,8 @@ bool ComponentIterator::on_camera(camera::Camera *camera) { return true; }
 #endif
 #ifdef USE_MEDIA_PLAYER
 bool ComponentIterator::on_media_player(media_player::MediaPlayer *media_player) { return true; }
+#endif
+#ifdef USE_KEYBOARD
+bool ComponentIterator::on_keyboard(keyboard::Keyboard *keyboard) { return true; }
 #endif
 }  // namespace esphome

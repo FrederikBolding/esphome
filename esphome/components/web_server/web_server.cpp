@@ -1666,6 +1666,31 @@ std::string WebServer::lock_json_(lock::Lock *obj, lock::LockState value, JsonDe
 }
 #endif
 
+#ifdef USE_KEYBOARD
+void WebServer::on_keyboard_update(keyboard::Keyboard *obj) {
+  this->events_.send(this->keyboard_json(obj, DETAIL_STATE).c_str(), "state");
+}
+
+void WebServer::handle_keyboard_request(AsyncWebServerRequest *request, const UrlMatch &match) {
+  for (keyboard::Keyboard *obj : App.get_keyboards()) {
+    if (obj->get_object_id() != match.id)
+      continue;
+    if (request->method() == HTTP_GET) {
+      std::string data = this->keyboard_json(obj, DETAIL_STATE);
+      request->send(200, "application/json", data.c_str());
+      return;
+    }
+  }
+  request->send(404);
+}
+
+std::string WebServer::keyboard_json(keyboard::Keyboard *obj, JsonDetail start_config) {
+  return json::build_json([obj, start_config](JsonObject root) {
+    set_json_id(root, obj, "keyboard-" + obj->get_object_id(), start_config);
+  });
+}
+#endif
+
 #ifdef USE_VALVE
 void WebServer::on_valve_update(valve::Valve *obj) {
   if (!this->include_internal_ && obj->is_internal())
@@ -2308,6 +2333,11 @@ bool WebServer::canHandle(AsyncWebServerRequest *request) const {
 #endif
   }
 
+#ifdef USE_KEYBOARD
+  if ((request->method() == HTTP_GET && !request->isExpectedRequestedConnType(RCT_WS)) && match.domain == "keyboard")
+    return true;
+#endif
+
   return false;
 }
 void WebServer::handleRequest(AsyncWebServerRequest *request) {
@@ -2476,6 +2506,13 @@ void WebServer::add_sorting_info_(JsonObject &root, EntityBase *entity) {
     if (this->sorting_groups_.find(this->sorting_entitys_[entity].group_id) != this->sorting_groups_.end()) {
       root[ESPHOME_F("sorting_group")] = this->sorting_groups_[this->sorting_entitys_[entity].group_id].name;
     }
+  }
+#endif
+
+#ifdef USE_KEYBOARD
+  if (match.domain == "keyboard") {
+    this->handle_keyboard_request(request, match);
+    return;
   }
 #endif
 }
