@@ -17,12 +17,10 @@ ListEntitiesIterator::ListEntitiesIterator(const WebServer *ws, DeferredUpdateEv
 ListEntitiesIterator::~ListEntitiesIterator() {}
 
 // begin - TODO remove after review
-void ListEntitiesIterator::begin(bool include_internal) {
-  ComponentIterator::begin(include_internal);
-}
+void ListEntitiesIterator::begin(bool include_internal) { ComponentIterator::begin(include_internal); }
 
 bool ListEntitiesIterator::on_begin() {
-  if (keyboard::Keyboard::keyboards.size() > this->at_){
+  if (keyboard::Keyboard::keyboards.size() > this->at_) {
     on_keyboard(keyboard::Keyboard::keyboards[this->at_]);
     ++this->at_;
     return false;
