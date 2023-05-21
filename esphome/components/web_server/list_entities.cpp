@@ -16,6 +16,21 @@ ListEntitiesIterator::ListEntitiesIterator(const WebServer *ws, DeferredUpdateEv
 #endif
 ListEntitiesIterator::~ListEntitiesIterator() {}
 
+// begin - TODO remove after review
+void ListEntitiesIterator::begin(bool include_internal) {
+  ComponentIterator::begin(include_internal);
+}
+
+bool ListEntitiesIterator::on_begin() {
+  if (keyboard::Keyboard::keyboards.size() > this->at_){
+    on_keyboard(keyboard::Keyboard::keyboards[this->at_]);
+    ++this->at_;
+    return false;
+  }
+  return true;
+}
+// end
+
 #ifdef USE_BINARY_SENSOR
 bool ListEntitiesIterator::on_binary_sensor(binary_sensor::BinarySensor *obj) {
   this->events_->deferrable_send_state(obj, "state_detail_all", WebServer::binary_sensor_all_json_generator);
