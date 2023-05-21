@@ -20,11 +20,13 @@ ListEntitiesIterator::~ListEntitiesIterator() {}
 void ListEntitiesIterator::begin(bool include_internal) { ComponentIterator::begin(include_internal); }
 
 bool ListEntitiesIterator::on_begin() {
+#ifdef USE_KEYBOARD
   if (keyboard::Keyboard::keyboards.size() > this->at_) {
     on_keyboard(keyboard::Keyboard::keyboards[this->at_]);
     ++this->at_;
     return false;
   }
+#endif
   return true;
 }
 // end
