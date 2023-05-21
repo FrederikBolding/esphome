@@ -1668,7 +1668,7 @@ std::string WebServer::lock_json_(lock::Lock *obj, lock::LockState value, JsonDe
 
 #ifdef USE_KEYBOARD
 void WebServer::handle_keyboard_request(AsyncWebServerRequest *request, const UrlMatch &match) {
-  for (keyboard::Keyboard *obj : keyboard::Keyboard::keyboards) {
+  for (keyboard::Keyboard *obj : keyboard::keyboards) {
     if (obj->get_object_id() != match.id)
       continue;
     if (request->method() == HTTP_GET) {
