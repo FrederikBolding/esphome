@@ -37,7 +37,7 @@ from esphome.core import CORE, CoroPriority, coroutine_with_priority
 import esphome.final_validate as fv
 from esphome.types import ConfigType
 
-AUTO_LOAD = ["json", "web_server_base"]
+AUTO_LOAD = ["json", "web_server_base", "component_iterator"]
 
 CONF_SORTING_GROUP_ID = "sorting_group_id"
 CONF_SORTING_GROUPS = "sorting_groups"
