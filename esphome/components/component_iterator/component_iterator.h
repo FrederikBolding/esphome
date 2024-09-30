@@ -213,4 +213,5 @@ class ComponentIterator {
   void advance_platform_();
 };
 
+}  // namespace component_iterator
 }  // namespace esphome

@@ -10,6 +10,7 @@
 #endif
 
 namespace esphome {
+namespace component_iterator {
 
 void ComponentIterator::begin(bool include_internal) {
   this->state_ = IteratorState::BEGIN;
