@@ -7,6 +7,9 @@
 #ifdef USE_CAMERA
 #include "esphome/components/camera/camera.h"
 #endif
+#ifdef USE_KEYBOARD
+#include "esphome/components/keyboard/keyboard.h"
+#endif
 
 namespace esphome {
 
@@ -86,6 +89,9 @@ class ComponentIterator {
 #endif
 #ifdef USE_MEDIA_PLAYER
   virtual bool on_media_player(media_player::MediaPlayer *media_player);
+#endif
+#ifdef USE_KEYBOARD
+  virtual bool on_keyboard(keyboard::Keyboard *keyboard);
 #endif
 #ifdef USE_ALARM_CONTROL_PANEL
   virtual bool on_alarm_control_panel(alarm_control_panel::AlarmControlPanel *a_alarm_control_panel) = 0;
@@ -172,6 +178,9 @@ class ComponentIterator {
 #endif
 #ifdef USE_MEDIA_PLAYER
     MEDIA_PLAYER,
+#endif
+#ifdef USE_KEYBOARD
+    KEYBOARD,
 #endif
 #ifdef USE_ALARM_CONTROL_PANEL
     ALARM_CONTROL_PANEL,

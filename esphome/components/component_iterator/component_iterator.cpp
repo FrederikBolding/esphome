@@ -158,6 +158,12 @@ void ComponentIterator::advance() {
       break;
 #endif
 
+#ifdef USE_KEYBOARD
+    case IteratorState::KEYBOARD:
+      this->process_entity_(keyboard::keyboards, &ComponentIterator::on_keyboard);
+      break;
+#endif
+
 #ifdef USE_ALARM_CONTROL_PANEL
     case IteratorState::ALARM_CONTROL_PANEL:
       this->process_platform_item_(App.get_alarm_control_panels(), &ComponentIterator::on_alarm_control_panel);
