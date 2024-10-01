@@ -17,7 +17,7 @@ class DeferredUpdateEventSource;
 #endif
 class WebServer;
 
-class ListEntitiesIterator : public ComponentIterator {
+class ListEntitiesIterator : public component_iterator::ComponentIterator {
  public:
 #ifdef USE_ESP32
   ListEntitiesIterator(const WebServer *ws, esphome::web_server_idf::AsyncEventSource *es);

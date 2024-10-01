@@ -6,8 +6,6 @@
 #include "esphome/core/component_iterator.h"
 namespace esphome::api {
 
-using namespace component_iterator;
-
 class APIConnection;
 
 // Macro for generating ListEntitiesIterator handlers
