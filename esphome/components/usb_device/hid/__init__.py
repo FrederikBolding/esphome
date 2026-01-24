@@ -105,5 +105,5 @@ async def to_code(config):
         media_keys = cg.new_Pvariable(config[CONF_MEDIA_KEYS_ID], report_id[CONF_MEDIA_KEYS])
         cg.add(var.set_report(media_keys))
     # Ensure tinyusb HID is enabled in the build
-    cg.add_build_flag("-DCONFIG_TINYUSB_HID_ENABLED=1")
-    cg.add_build_flag("-DCFG_TUD_HID=CONFIG_TINYUSB_HID_ENABLED")
+    cg.add_build_flag("-DCFG_TUD_ENABLED=1")
+    cg.add_build_flag("-DCFG_TUD_HID=1")
