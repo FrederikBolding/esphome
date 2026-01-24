@@ -28,7 +28,7 @@ void TinyUSB::setup() {
       ESP_LOGE(TAG, "TinyUSB driver install failed; error %s", esp_err_to_name(result));
       this->mark_failed(esp_err_to_name(result));
     }
-  })
+  });
 }
 
 void TinyUSB::dump_config() {
