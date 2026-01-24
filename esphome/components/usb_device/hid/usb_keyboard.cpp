@@ -16,7 +16,7 @@ template<class T> void Report<T>::loop() {
 }
 
 template<class T> void Report<T>::report() {
-  if (!tud_hid_ready()) {
+  if (!tud_ready()) {
     if (!pending_) {
       ESP_LOGD(TAG, "HID device is not ready");
     }
