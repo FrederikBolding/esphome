@@ -20,6 +20,9 @@ class USBHIDDevice : public Component, public hid::HIDDevice {
   void loop() override;
   float get_setup_priority() const override;
   void dump_config();
+  // Called by tinyusb C callbacks when an output report (SET_REPORT) is received.
+  // Made public so extern "C" wrappers can forward reports here.
+  static void hid_report_callback(uint8_t report_id, const uint8_t *buffer, uint16_t bufsize);
 #ifdef USE_KEYBOARD
   void set_report(KeyboardReport *keyboard_report) { keyboard_report_ = keyboard_report; }
   void set_report(MediaKeysReport *media_keys_report) { media_keys_report_ = media_keys_report; }
@@ -27,7 +30,6 @@ class USBHIDDevice : public Component, public hid::HIDDevice {
   MediaKeysReport *media_keys_control() { return media_keys_report_; }
 #endif
  protected:
-  static void hid_report_callback(uint8_t report_id, const uint8_t *buffer, uint16_t bufsize);
 #ifdef USE_KEYBOARD
   KeyboardReport *keyboard_report_{nullptr};
   MediaKeysReport *media_keys_report_{nullptr};
