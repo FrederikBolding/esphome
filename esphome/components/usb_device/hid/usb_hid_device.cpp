@@ -52,6 +52,48 @@ void USBHIDDevice::hid_report_callback(uint8_t report_id, const uint8_t *buffer,
 #endif
 }
 
+extern "C" {
+
+// Provide tinyusb HID callbacks here so they are colocated with the USBHIDDevice
+// implementation. These symbols must have C linkage and default visibility so
+// the tinyusb HID class (compiled in the ESP-IDF managed component) can find
+// them at link time.
+
+uint16_t __attribute__((used, visibility("default"))) tud_hid_descriptor_report_cb(uint8_t itf) {
+  (void) itf;
+  // Descriptor is provided via codegen/progmem array and the tinyusb component
+  // handles descriptors; return 0 to indicate we don't provide an alternate.
+  return 0;
+}
+
+uint16_t __attribute__((used, visibility("default"))) tud_hid_get_report_cb(uint8_t itf,
+                                                                            uint8_t report_id,
+                                                                            hid_report_type_t report_type,
+                                                                            void *buffer,
+                                                                            uint16_t reqlen) {
+  (void) itf;
+  (void) report_id;
+  (void) report_type;
+  (void) buffer;
+  (void) reqlen;
+  return 0;
+}
+
+void __attribute__((used, visibility("default"))) tud_hid_set_report_cb(uint8_t itf,
+                                                                          uint8_t report_id,
+                                                                          const uint8_t *buffer,
+                                                                          uint16_t bufsize) {
+  (void) itf;
+  if (buffer == nullptr || bufsize == 0) return;
+
+  if (global_usb_hid_device) {
+    // Forward to the C++ handler which will update LED indicators, etc.
+    USBHIDDevice::hid_report_callback(report_id, static_cast<const uint8_t *>(buffer), bufsize);
+  }
+}
+
+}  // extern "C"
+
 }  // namespace usb_device
 }  // namespace esphome
 
