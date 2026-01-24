@@ -30,6 +30,14 @@ void TinyUSB::setup() {
 }
 
 void TinyUSB::dump_config() {
+  // TEMP: Retry
+  if (this.is_failed()) {
+    esp_err_t result = tinyusb_driver_install(&this->tusb_cfg_);
+    if (result != ESP_OK) {
+      ESP_LOGE(TAG, "TinyUSB driver install failed; error %s", esp_err_to_name(result));
+      this->mark_failed(esp_err_to_name(result));
+    }
+  }
   ESP_LOGCONFIG(TAG,
                 "TinyUSB:\n"
                 "  Product ID: 0x%04X\n"
