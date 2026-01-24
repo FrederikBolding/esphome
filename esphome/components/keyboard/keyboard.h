@@ -74,17 +74,17 @@ class Keys {
 
 template<typename... Ts> class SetAction : public Action<Ts...>, public Parented<Keyboard>, public Keys {
  public:
-  void play(Ts... x) override { this->parent_->make_call(type_).set_key(keys_).perform(); }
+  void play(const Ts &...x) override { this->parent_->make_call(type_).set_key(keys_).perform(); }
 };
 
 template<typename... Ts> class DownAction : public Action<Ts...>, public Parented<Keyboard>, public Keys {
  public:
-  void play(Ts... x) override { this->parent_->make_call(type_).key_down(keys_).perform(); }
+  void play(const Ts &...x) override { this->parent_->make_call(type_).key_down(keys_).perform(); }
 };
 
 template<typename... Ts> class UpAction : public Action<Ts...>, public Parented<Keyboard>, public Keys {
  public:
-  void play(Ts... x) override { this->parent_->make_call(type_).key_up(keys_).perform(); }
+  void play(const Ts &...x) override { this->parent_->make_call(type_).key_up(keys_).perform(); }
 };
 
 extern std::vector<Keyboard *> keyboards;  // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
