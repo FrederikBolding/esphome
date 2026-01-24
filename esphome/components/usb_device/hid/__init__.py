@@ -1,4 +1,5 @@
 import esphome.codegen as cg
+from esphome.components.esp32 import add_idf_sdkconfig_option
 import esphome.config_validation as cv
 from esphome.const import CONF_ID, CONF_TYPE
 from esphome.cpp_generator import MockObj
@@ -105,4 +106,4 @@ async def to_code(config):
         media_keys = cg.new_Pvariable(config[CONF_MEDIA_KEYS_ID], report_id[CONF_MEDIA_KEYS])
         cg.add(var.set_report(media_keys))
     # Ensure tinyusb HID is enabled in the build
-    cg.add_build_flag("-DCONFIG_TINYUSB_HID_COUNT=1")
+    add_idf_sdkconfig_option("CONFIG_TINYUSB_HID_COUNT", 1)
