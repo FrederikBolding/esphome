@@ -153,7 +153,7 @@ async def setup_keyboard_core_(var, config):
         web_base = await cg.get_variable(config[CONF_WEB_SERVER_BASE_ID])
         cg.add(web_base.add_handler(web_socket))
         await cg.register_component(web_socket, config)
-    await setup_entity(var, config)
+    await setup_entity(var, config, "keyboard")
 
 
 async def register_keyboard(var, config):
