@@ -20,6 +20,7 @@ void TinyUSB::setup() {
       .string_descriptor = this->string_descriptor_,
       .string_descriptor_count = SIZE,
       .external_phy = false,
+      .configuration_descriptor = this->default_config_descriptor,
   };
 
   this->set_timeout(1000 * 10, [this] {
