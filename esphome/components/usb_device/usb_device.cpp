@@ -1,8 +1,7 @@
 #if defined(USE_ESP32_VARIANT_ESP32S2) || defined(USE_ESP32_VARIANT_ESP32S3)
 #include "usb_device.h"
 #include "esphome/core/log.h"
-#include "Adafruit_TinyUSB.h"
-#include "USB.h"
+#include "tusb.h"
 
 namespace esphome {
 namespace usb_device {
@@ -10,31 +9,22 @@ namespace usb_device {
 static const char *const TAG = "usb_device";
 
 void UsbDevice::setup() {
-#ifdef USE_VENDOR_ID
-  USB.VID(this->vendor_id_);
-#endif
-#ifdef USE_PRODUCT_ID
-  USB.PID(this->product_id_);
-#endif
-  if (!this->manufacturer_name_.empty()) {
-    USB.manufacturerName(this->manufacturer_name_.c_str());
-  }
-  if (!this->product_name_.empty()) {
-    USB.productName(this->product_name_.c_str());
-  }
-  USB.begin();
+  // With ESP-IDF we use the TinyUSB C stack initialized by the tinyusb component.
+  // The USB descriptors (VID/PID, strings) are configured via the tinyusb component
+  // and the build-time defines. Store the values locally so they can be applied by
+  // the tinyusb component if needed.
 }
 
 void UsbDevice::update() {
 #ifdef USE_BINARY_SENSOR
   if (mounted_ != nullptr) {
-    mounted_->publish_state(TinyUSBDevice.mounted());
+    mounted_->publish_state(tud_mounted());
   }
   if (ready_ != nullptr) {
-    ready_->publish_state(TinyUSBDevice.ready());
+    ready_->publish_state(tud_ready());
   }
   if (suspended_ != nullptr) {
-    suspended_->publish_state(TinyUSBDevice.suspended());
+    suspended_->publish_state(tud_suspended());
   }
 #endif
 }
@@ -45,8 +35,8 @@ float UsbDevice::get_setup_priority() const {
 }
 
 void UsbDevice::dump_config() {
-  ESP_LOGCONFIG(TAG, "USB device - mounted: %s, suspended: %s, ready: %s", YESNO(TinyUSBDevice.mounted()),
-                YESNO(TinyUSBDevice.suspended()), YESNO(TinyUSBDevice.ready()));
+  ESP_LOGCONFIG(TAG, "USB device - mounted: %s, suspended: %s, ready: %s", YESNO(tud_mounted()),
+                YESNO(tud_suspended()), YESNO(tud_ready()));
 }
 
 void UsbDevice::set_vendor_id(const uint16_t vid) { this->vendor_id_ = vid; }

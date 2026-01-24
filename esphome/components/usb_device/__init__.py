@@ -43,7 +43,6 @@ CONFIG_SCHEMA = cv.All(
             cv.Optional(CONF_PRODUCT_NAME): cv.string,
         }
     ).extend(cv.polling_component_schema("10s")),
-    cv.only_with_arduino,
     cv.only_on_esp32,
     _validate_variant,
 )

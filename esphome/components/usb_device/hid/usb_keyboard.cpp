@@ -2,6 +2,7 @@
 #if defined(USE_ESP32_VARIANT_ESP32S2) || defined(USE_ESP32_VARIANT_ESP32S3)
 #ifdef USE_KEYBOARD
 #include "esphome/core/log.h"
+#include "tusb.h"
 
 namespace esphome {
 namespace usb_device {
@@ -15,7 +16,7 @@ template<class T> void Report<T>::loop() {
 }
 
 template<class T> void Report<T>::report() {
-  if (usb_hid_->ready() == false) {
+  if (!tud_hid_ready()) {
     if (!pending_) {
       ESP_LOGD(TAG, "HID device is not ready");
     }
@@ -34,7 +35,16 @@ KeyboardReport::KeyboardReport(Adafruit_USBD_HID *usb_hid, uint8_t report_id)
     : Report(usb_hid, [this, report_id] {
         ESP_LOGV(TAG, "keyboard report id: %d - modifier: %d, code %d, %d, %d, %d, %d, %d", report_id, modifier_,
                  hidcode_[0], hidcode_[1], hidcode_[2], hidcode_[3], hidcode_[4], hidcode_[5]);
-        return usb_hid_->keyboardReport(report_id, modifier_, hidcode_);
+        uint8_t buf[8] = {0};
+        buf[0] = modifier_;
+        buf[1] = 0;  // reserved
+        buf[2] = hidcode_[0];
+        buf[3] = hidcode_[1];
+        buf[4] = hidcode_[2];
+        buf[5] = hidcode_[3];
+        buf[6] = hidcode_[4];
+        buf[7] = hidcode_[5];
+        return tud_hid_report(report_id, buf, sizeof(buf));
       }) {}
 
 void KeyboardReport::loop() {
@@ -53,7 +63,8 @@ void KeyboardReport::loop() {
 MediaKeysReport::MediaKeysReport(Adafruit_USBD_HID *usb_hid, uint8_t report_id)
     : Report(usb_hid, [this, report_id] {
         ESP_LOGV(TAG, "media keys report id: %d - %d", report_id, media_keys_);
-        return usb_hid_->sendReport16(report_id, media_keys_);
+        uint16_t val = media_keys_;
+        return tud_hid_report(report_id, &val, sizeof(val));
       }) {}
 
 template class Report<hid::Keyboard>;

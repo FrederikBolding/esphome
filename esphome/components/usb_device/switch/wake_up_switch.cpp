@@ -2,7 +2,7 @@
 #if defined(USE_ESP32_VARIANT_ESP32S2) || defined(USE_ESP32_VARIANT_ESP32S3)
 #ifdef USE_SWITCH
 #include "esphome/core/log.h"
-#include "Adafruit_TinyUSB.h"
+#include "tusb.h"
 
 namespace esphome {
 namespace usb_device {
@@ -11,7 +11,7 @@ static const char *const TAG = "usb_device";
 
 void WakeUpSwitch::write_state(bool state) {
   if (state) {
-    if (!TinyUSBDevice.remoteWakeup()) {
+    if (!tud_remote_wakeup()) {
       ESP_LOGW(TAG, "Unable to wakeup USB host");
     }
   }

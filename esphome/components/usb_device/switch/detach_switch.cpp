@@ -2,7 +2,7 @@
 #if defined(USE_ESP32_VARIANT_ESP32S2) || defined(USE_ESP32_VARIANT_ESP32S3)
 #ifdef USE_SWITCH
 #include "esphome/core/log.h"
-#include "Adafruit_TinyUSB.h"
+#include "tusb.h"
 
 namespace esphome {
 namespace usb_device {
@@ -11,9 +11,9 @@ static const char *const TAG = "usb_device";
 
 void DetachSwitch::write_state(bool state) {
   if (state) {
-    TinyUSBDevice.detach();
+    tud_disconnect();
   } else {
-    TinyUSBDevice.attach();
+    tud_connect();
   }
   this->publish_state(state);
 }

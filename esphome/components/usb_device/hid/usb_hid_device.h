@@ -2,7 +2,15 @@
 #include "esphome/core/defines.h"
 #include "esphome/components/hid/hid_device.h"
 #if defined(USE_ESP32_VARIANT_ESP32S2) || defined(USE_ESP32_VARIANT_ESP32S3)
-#include "Adafruit_TinyUSB.h"
+#include "tusb.h"
+#include <cstdint>
+#include <functional>
+#if 0
+// Forward declaration placeholder for Adafruit wrapper type used in the Arduino build.
+class Adafruit_USBD_HID;
+#else
+class Adafruit_USBD_HID;
+#endif
 #include "esphome/core/component.h"
 #ifdef USE_KEYBOARD
 #include "usb_keyboard.h"

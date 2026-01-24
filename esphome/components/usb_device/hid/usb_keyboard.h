@@ -4,7 +4,13 @@
 #ifdef USE_KEYBOARD
 
 #include <functional>
-#include "Adafruit_TinyUSB.h"
+#include "tusb.h"
+#include <functional>
+#if 0
+class Adafruit_USBD_HID;
+#else
+class Adafruit_USBD_HID;
+#endif
 #include "esphome/components/hid/keyboard/hid_keyboard.h"
 #include "esphome/components/hid/keyboard/hid_media_keys.h"
 
