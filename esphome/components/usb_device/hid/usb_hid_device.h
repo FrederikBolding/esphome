@@ -2,15 +2,9 @@
 #include "esphome/core/defines.h"
 #include "esphome/components/hid/hid_device.h"
 #if defined(USE_ESP32_VARIANT_ESP32S2) || defined(USE_ESP32_VARIANT_ESP32S3)
-#include "tusb.h"
 #include <cstdint>
 #include <functional>
-#if 0
-// Forward declaration placeholder for Adafruit wrapper type used in the Arduino build.
-class Adafruit_USBD_HID;
-#else
-class Adafruit_USBD_HID;
-#endif
+#include "tusb.h"
 #include "esphome/core/component.h"
 #ifdef USE_KEYBOARD
 #include "usb_keyboard.h"
@@ -21,7 +15,7 @@ namespace usb_device {
 
 class USBHIDDevice : public Component, public hid::HIDDevice {
  public:
-  USBHIDDevice(Adafruit_USBD_HID *usb_hid) : usb_hid_(usb_hid) {}
+  USBHIDDevice() = default;
   void setup() override;
   void loop() override;
   float get_setup_priority() const override;
@@ -33,9 +27,7 @@ class USBHIDDevice : public Component, public hid::HIDDevice {
   MediaKeysReport *media_keys_control() { return media_keys_report_; }
 #endif
  protected:
-  Adafruit_USBD_HID *usb_hid_;
-  static void hid_report_callback(uint8_t report_id, hid_report_type_t report_type, uint8_t const *buffer,
-                                  uint16_t bufsize);
+  static void hid_report_callback(uint8_t report_id, const uint8_t *buffer, uint16_t bufsize);
 #ifdef USE_KEYBOARD
   KeyboardReport *keyboard_report_{nullptr};
   MediaKeysReport *media_keys_report_{nullptr};
