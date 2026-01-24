@@ -6,7 +6,7 @@ import esphome.config_validation as cv
 from esphome.const import CONF_ID, CONF_TYPE
 from esphome.core import CORE
 from esphome import automation
-from esphome.cpp_helpers import setup_entity
+from esphome.core.entity_helpers import setup_entity
 from esphome.cpp_generator import MockObj
 from esphome.components.web_server_base import CONF_WEB_SERVER_BASE_ID
 from esphome.components import web_server_base
