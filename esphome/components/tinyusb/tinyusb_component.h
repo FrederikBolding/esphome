@@ -124,7 +124,7 @@ class TinyUSB : public Component {
     0x01,        // bNumEndpoints (interrupt IN)
     TUSB_CLASS_HID,    // bInterfaceClass
     HID_SUBCLASS_BOOT, // bInterfaceSubClass (boot)
-    HID_PROTOCOL_KEYBOARD, // bInterfaceProtocol
+    HID_ITF_PROTOCOL_KEYBOARD, // bInterfaceProtocol
     0x00,        // iInterface
 
     // HID descriptor (class-specific) — 9 bytes for HID
