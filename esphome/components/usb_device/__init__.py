@@ -83,8 +83,3 @@ async def to_code(config):
         cg.add(var.set_product_name(config[CONF_PRODUCT_NAME]))
 
     await cg.register_component(var, config)
-    cg.add_library("adafruit/Adafruit TinyUSB Library", "2.2.4", None)
-    cg.add_build_flag("-DCFG_TUSB_MCU=OPT_MCU_ESP32S2")
-    cg.add_build_flag("-DCFG_TUSB_RHPORT0_MODE=OPT_MODE_DEVICE")
-    cg.add_build_flag("-DCFG_TUSB_OS=OPT_OS_FREERTOS")
-    cg.add_platformio_option("build_unflags", "-DARDUINO_USB_CDC_ON_BOOT=1")
