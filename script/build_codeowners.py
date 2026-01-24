@@ -3,9 +3,6 @@ import argparse
 from collections import defaultdict
 from pathlib import Path
 import sys
-import os
-
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 from esphome.config import get_component, get_platform
 from esphome.const import KEY_CORE, KEY_TARGET_FRAMEWORK, KEY_TARGET_PLATFORM

@@ -258,14 +258,6 @@
 #define USE_LOGGER_USB_CDC
 #define USE_LOGGER_USB_SERIAL_JTAG
 #endif
-
-#if defined(USE_ESP32_VARIANT_ESP32S2)
-#define USE_LOGGER_USB_CDC
-#elif defined(USE_ESP32_VARIANT_ESP32S3) || defined(USE_ESP32_VARIANT_ESP32C3) || \
-    defined(USE_ESP32_VARIANT_ESP32C6) || defined(USE_ESP32_VARIANT_ESP32H2)
-#define USE_LOGGER_USB_CDC
-#define USE_LOGGER_USB_SERIAL_JTAG
-#endif
 #endif
 
 // ESP8266-specific feature flags

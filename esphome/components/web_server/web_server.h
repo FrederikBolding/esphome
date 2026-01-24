@@ -440,14 +440,6 @@ class WebServer : public Controller,
   static std::string valve_all_json_generator(WebServer *web_server, void *source);
 #endif
 
-#ifdef USE_KEYBOARD
-  /// Handle a lock request under '/keyboard/<id>/</down/up>'.
-  void handle_keyboard_request(AsyncWebServerRequest *request, const UrlMatch &match);
-
-  /// Dump the lock state with its value as a JSON string.
-  std::string keyboard_json(keyboard::Keyboard *obj, JsonDetail start_config);
-#endif
-
 #ifdef USE_ALARM_CONTROL_PANEL
   void on_alarm_control_panel_update(alarm_control_panel::AlarmControlPanel *obj) override;
 
@@ -493,14 +485,6 @@ class WebServer : public Controller,
 
   static std::string update_state_json_generator(WebServer *web_server, void *source);
   static std::string update_all_json_generator(WebServer *web_server, void *source);
-#endif
-
-#ifdef USE_KEYBOARD
-  /// Handle a lock request under '/keyboard/<id>/</down/up>'.
-  void handle_keyboard_request(AsyncWebServerRequest *request, const UrlMatch &match);
-
-  /// Dump the lock state with its value as a JSON string.
-  std::string keyboard_json(keyboard::Keyboard *obj, JsonDetail start_config);
 #endif
 
   /// Override the web handler's canHandle method.

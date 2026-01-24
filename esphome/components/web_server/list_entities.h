@@ -17,7 +17,7 @@ class DeferredUpdateEventSource;
 #endif
 class WebServer;
 
-class ListEntitiesIterator : public component_iterator::ComponentIterator {
+class ListEntitiesIterator : public ComponentIterator {
  public:
 #ifdef USE_ESP32
   ListEntitiesIterator(const WebServer *ws, esphome::web_server_idf::AsyncEventSource *es);
@@ -76,9 +76,6 @@ class ListEntitiesIterator : public component_iterator::ComponentIterator {
 #ifdef USE_VALVE
   bool on_valve(valve::Valve *obj) override;
 #endif
-#ifdef USE_KEYBOARD
-  bool on_keyboard(keyboard::Keyboard *keyboard) override;
-#endif
 #ifdef USE_ALARM_CONTROL_PANEL
   bool on_alarm_control_panel(alarm_control_panel::AlarmControlPanel *obj) override;
 #endif
@@ -95,9 +92,6 @@ class ListEntitiesIterator : public component_iterator::ComponentIterator {
   bool on_update(update::UpdateEntity *obj) override;
 #endif
   bool completed() { return this->state_ == IteratorState::NONE; }
-#ifdef USE_KEYBOARD
-  bool on_keyboard(keyboard::Keyboard *keyboard) override;
-#endif
 
  protected:
   const WebServer *web_server_;
