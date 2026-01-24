@@ -3,6 +3,8 @@
 namespace esphome {
 namespace keyboard {
 
+static const char *TAG = "keyboard";
+
 Keyboard::Keyboard(KeyboardControl *keyboard_control, KeyboardControl *media_keys_control)
     : keyboard_control_(keyboard_control), media_keys_control_(media_keys_control) {
   if (keyboard_control_) {
@@ -24,11 +26,15 @@ KeyboardCall Keyboard::make_call(KeyboardType type) {
     case KEYBOARD:
       if (keyboard_control_) {
         return KeyboardCall(keyboard_control_);
+      } else {
+        ESP_LOGE(TAG, "Keyboard control not found.");
       }
       break;
     case MEDIA_KEYS:
       if (media_keys_control_) {
         return KeyboardCall(media_keys_control_);
+      } else {
+        ESP_LOGE(TAG, "Media keys control not found.");
       }
       break;
     default:
